@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Maps Pincode Search</title>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Google Maps Pincode Search</h1>
+    <input type="text" id="pincodeInput" placeholder="Enter Pincode">
+    <button onclick="searchPincode()">Search</button>
+    <div id="map"></div>
+    <div id="pincodeImage"></div>
+
+    <script>
+        function searchPincode() {
+            var pincode = document.getElementById('pincodeInput').value;
+            var geocoder = new google.maps.Geocoder();
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 8
+            });
+
+            geocoder.geocode({ 'address': pincode }, function (results, status) {
+                if (status === 'OK') {
+                    map.setCenter(results[0].geometry.location);
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+
+                    // Display pincode related image
+                    document.getElementById('pincodeImage').innerHTML = '<img src="https://example.com/' + pincode + '.jpg" alt="Pincode Image">';
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZwfDWwap4suk8u6Wp4ApCR1qexxyiy9U&callback=initMap"></script>
+</body>
+</html>
